@@ -1,7 +1,14 @@
 import { Query } from "mongoose";
+import { validate } from "validate.js";
 import { EmployeeModel, IEmployee } from "../models/schema";
+import { EmployeeValidator } from '../validator'
 
 export async function create_employee(employee: IEmployee): Promise<IEmployee> {
+    const validation = validate(employee, EmployeeValidator)
+    if (validation) {
+        console.log("Validation: ", validation)
+        throw new Error(validation)
+    }
     return EmployeeModel.create(employee)
 }
 
@@ -10,6 +17,11 @@ export function get_employees(): Query<IEmployee[], IEmployee> {
 }
 
 export function update_employee(id: string, employee: IEmployee): ReturnType<typeof EmployeeModel.findOneAndUpdate> {
+    const validation = validate(employee, EmployeeValidator)
+    if (validation) {
+        console.log("Validation: ", validation)
+        throw new Error(validation)
+    }
     return EmployeeModel.findByIdAndUpdate(id, employee)
 }
 

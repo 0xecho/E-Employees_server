@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import mongoose, { ObjectId } from 'mongoose'
+import { errorHandler } from './errorHandler'
 
 import { 
     create_employee,
@@ -27,6 +28,8 @@ app.get('/employees', get_employees)
 app.post('/employees', create_employee)
 app.put('/employees/:id', update_employee)
 app.delete('/employees/:id', delete_employee)
+
+app.use(errorHandler)
 
 const MONGO_CONNECTION_STRING: string = process.env.MONGO_CONNECTION_STRING || "mongodb://localhost:27017/employees"
 mongoose.connect(MONGO_CONNECTION_STRING)

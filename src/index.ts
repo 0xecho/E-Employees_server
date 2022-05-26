@@ -2,8 +2,11 @@ import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-
 import asyncHandler from "express-async-handler"
+
+import { EmployeeModel, IEmployee } from './models/schema'
+import employeeService from './services/employeeService'
+import mongoose from 'mongoose'
 
 dotenv.config()
 
@@ -17,41 +20,32 @@ app.get('/', (req: Request, res: Response) => {
     res.send("Dube zare yelem, nege temelesu.")
 })
 
-type Employee = {
-    name: string,
-    date_of_birth: string,
-    salary: number,
-    bender: string,
-    id?: number
-}
-
-let employees: Employee[] = []
-
 app.get('/employees', asyncHandler(async (req: Request, res: Response) => {
+    const employees = await employeeService.get_employees()
     res.send(employees)
 }))
 
 app.post('/employees', asyncHandler(async (req: Request, res: Response) => {    
-    const employee: Employee = req.body
-    employee.id = employees.length + 1
-    employees.push(employee)
-    res.send(employee)
+    const employee: IEmployee = req.body
+    const created_employee = await employeeService.create_employee(employee)
+    res.send(created_employee)
 }))
 
 app.put('/employees/:id', asyncHandler(async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id)
-    const employee: any = req.body
-    employees = employees.map((e: Employee) => {
-        return e.id === id ? employee : e
-    })
-    res.send(employee)
+    const employee: IEmployee = req.body
+    const updated_employee = await employeeService.update_employee(id, employee)
+    res.send(updated_employee)
 }))
 
 app.delete('/employees/:id', asyncHandler(async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id)
-    employees.splice(id, 1)
-    res.send(employees)
+    const deleted_employee = await employeeService.delete_employee(id)
+    res.send(deleted_employee)
 }))
+
+const MONGOOSE_URI: string = process.env.MONGOOSE_URI || "mongodb://localhost:27017/employees"
+mongoose.connect(MONGOOSE_URI)
 
 
 app.listen(port);

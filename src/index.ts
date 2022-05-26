@@ -6,7 +6,7 @@ import asyncHandler from "express-async-handler"
 
 import { EmployeeModel, IEmployee } from './models/schema'
 import employeeService from './services/employeeService'
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 
 dotenv.config()
 
@@ -32,14 +32,14 @@ app.post('/employees', asyncHandler(async (req: Request, res: Response) => {
 }))
 
 app.put('/employees/:id', asyncHandler(async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id)
+    const id: string = req.params.id
     const employee: IEmployee = req.body
     const updated_employee = await employeeService.update_employee(id, employee)
     res.send(updated_employee)
 }))
 
 app.delete('/employees/:id', asyncHandler(async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id)
+    const id: string = req.params.id
     const deleted_employee = await employeeService.delete_employee(id)
     res.send(deleted_employee)
 }))

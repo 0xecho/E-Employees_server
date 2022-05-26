@@ -9,11 +9,11 @@ export function get_employees(): Query<IEmployee[], IEmployee> {
     return EmployeeModel.find()
 }
 
-export function update_employee(id: number, employee: IEmployee): ReturnType<typeof EmployeeModel.findOneAndUpdate> {
+export function update_employee(id: string, employee: IEmployee): ReturnType<typeof EmployeeModel.findOneAndUpdate> {
     return EmployeeModel.findByIdAndUpdate(id, employee)
 }
 
-export function delete_employee(id: number): ReturnType<typeof EmployeeModel.findOneAndDelete> {
+export function delete_employee(id: string): ReturnType<typeof EmployeeModel.findOneAndDelete> {
     return EmployeeModel.findByIdAndDelete(id)
 }
 

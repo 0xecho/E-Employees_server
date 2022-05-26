@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express"
 
-export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-    console.log(err);
+export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log("[errorHandler]", err.message)
     
-    res.status(err.status || 500)
+    let err_object: any = JSON.parse(err.message)
+    res.status(err_object.status || 500)
     res.json({
-        message: err.message,
-        error: err
+        message: err_object.message,
+        error: err_object
     })
 }

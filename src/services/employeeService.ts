@@ -6,8 +6,7 @@ import { EmployeeValidator } from '../validator'
 export async function create_employee(employee: IEmployee): Promise<IEmployee> {
     const validation = validate(employee, EmployeeValidator)
     if (validation) {
-        console.log("Validation: ", validation)
-        throw new Error(validation)
+        throw new Error(JSON.stringify(validation))
     }
     return EmployeeModel.create(employee)
 }
@@ -19,8 +18,7 @@ export function get_employees(): Query<IEmployee[], IEmployee> {
 export function update_employee(id: string, employee: IEmployee): ReturnType<typeof EmployeeModel.findOneAndUpdate> {
     const validation = validate(employee, EmployeeValidator)
     if (validation) {
-        console.log("Validation: ", validation)
-        throw new Error(validation)
+        throw new Error(JSON.stringify(validation))
     }
     return EmployeeModel.findByIdAndUpdate(id, employee)
 }

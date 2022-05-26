@@ -28,7 +28,7 @@ app.post('/employees', create_employee)
 app.put('/employees/:id', update_employee)
 app.delete('/employees/:id', delete_employee)
 
-const MONGOOSE_URI: string = process.env.MONGOOSE_URI || "mongodb://localhost:27017/employees"
-mongoose.connect(MONGOOSE_URI)
+const MONGO_CONNECTION_STRING: string = process.env.MONGO_CONNECTION_STRING || "mongodb://localhost:27017/employees"
+mongoose.connect(MONGO_CONNECTION_STRING)
 
 app.listen(port);

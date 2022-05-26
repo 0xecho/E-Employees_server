@@ -1,4 +1,4 @@
-version: 3.8
+version: "3.8"
 
 services:
   web:
@@ -9,7 +9,3 @@ services:
       - .:/app
     environment:
       - PORT=8080
-  db:
-    image: mongo
-    ports:
-      - 27017:27017

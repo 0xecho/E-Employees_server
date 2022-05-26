@@ -1,12 +1,17 @@
 import { Query } from "mongoose";
-import { EmployeeModel, IEmployee } from "../models/schema";
+import { EmployeeModel, IEmployee, PaginatedEmployees } from "../models/schema";
 
 export async function create_employee(employee: IEmployee): Promise<IEmployee> {
     return EmployeeModel.create(employee)
 }
 
-export function get_employees(): Query<IEmployee[], IEmployee> {
-    return EmployeeModel.find()
+export async function get_employees(page: number, limit: number): Promise<PaginatedEmployees> {
+    const employees = await EmployeeModel.find().skip((page - 1) * limit).limit(limit)
+    return {
+        employees,
+        totalPages: Math.ceil(await EmployeeModel.countDocuments() / limit),
+    }    
+    
 }
 
 export function update_employee(id: string, employee: IEmployee): ReturnType<typeof EmployeeModel.findOneAndUpdate> {

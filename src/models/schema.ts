@@ -37,3 +37,8 @@ const employeeSchema = new Schema<IEmployee, IEmployeeMethods>({
 })
 
 export const EmployeeModel = model<IEmployee, IEmployeeMethods>('Employee', employeeSchema)
+
+export interface PaginatedEmployees {
+    employees: IEmployee[],
+    totalPages: number
+}

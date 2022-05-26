@@ -4,8 +4,15 @@ import { IEmployee } from '../models/schema'
 import employeeService from '../services/employeeService'
 
 export const get_employees =  asyncHandler(async (req: Request, res: Response) => {
-    const employees = await employeeService.get_employees()
-    res.send(employees)
+    const page: any = parseInt(req.query.page) || 1
+    const limit: any = parseInt(req.query.limit) || 10
+    const employees = await employeeService.get_employees(page, limit)
+    const totalPages =
+    res.send({
+        employees,
+        page,
+        limit
+    })
 })
 
 export const create_employee = asyncHandler(async (req: Request, res: Response) => {
